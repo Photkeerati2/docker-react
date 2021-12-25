@@ -1,0 +1,19 @@
+version: '3'
+services:
+  web:
+    build:
+      context: . # where the docker image can import from, In this case we need to file come from the same directory of docker-compose
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000" # map the port first 3000 out side of the container to last 3000 inside of the container
+    volumes:
+      - /app/node_modules # do not map a node_modules inside of the container
+      - .:/app # .:/app mean map the current folder out side of the conatiner to the /app folder inside of the container
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["npm","run","test"] # override command
